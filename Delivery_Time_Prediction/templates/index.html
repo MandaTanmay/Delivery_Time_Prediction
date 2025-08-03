@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Time Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Delivery Time Prediction</h1>
+
+        <form action="/predict" method="POST" onsubmit="return validateForm();">
+            <div class="input-group">
+                <label for="distance">Distance (km):</label>
+                <input type="number" step="0.01" name="distance" id="distance" required>
+            </div>
+
+            <div class="input-group">
+                <label for="weight">Package Weight (kg):</label>
+                <input type="number" step="0.01" name="weight" id="weight" required>
+            </div>
+
+            <div class="input-group">
+                <label for="delivery_method">Delivery Method:</label>
+                <select name="delivery_method" id="delivery_method" required>
+                    <option value="">Select</option>
+                    <option value="Express">Express</option>
+                    <option value="Overnight">Overnight</option>
+                    <option value="Standard">Standard</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="traffic">Traffic Condition:</label>
+                <select name="traffic" id="traffic" required>
+                    <option value="">Select</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="weather">Weather Condition:</label>
+                <select name="weather" id="weather" required>
+                    <option value="">Select</option>
+                    <option value="Clear">Clear</option>
+                    <option value="Rainy">Rainy</option>
+                    <option value="Snowy">Snowy</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="priority">Order Priority:</label>
+                <select name="priority" id="priority" required>
+                    <option value="">Select</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="transport">Mode of Transport:</label>
+                <select name="transport" id="transport" required>
+                    <option value="">Select</option>
+                    <option value="Air">Air</option>
+                    <option value="Truck">Truck</option>
+                    <option value="Ship">Ship</option>
+                </select>
+            </div>
+
+            <button type="submit">Predict</button>
+            <div class="spinner" id="spinner"></div>
+        </form>
+
+        {% if prediction_text %}
+            <div class="output">
+                <p class="typewriter">{{ prediction_text }}</p>
+            </div>
+        {% endif %}
+
+        {% if error %}
+            <div class="toast" id="error-toast">
+                {{ error }}
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function validateForm() {
+            const spinner = document.getElementById('spinner');
+            spinner.style.display = 'inline-block';
+            return true;
+        }
+
+        // Toast popup hide after 3 seconds
+        window.onload = function () {
+            const toast = document.getElementById('error-toast');
+            if (toast) {
+                setTimeout(() => {
+                    toast.style.opacity = 0;
+                }, 3000);
+            }
+        };
+    </script>
+</body>
+</html>
